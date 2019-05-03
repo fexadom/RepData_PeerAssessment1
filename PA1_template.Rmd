@@ -9,12 +9,18 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 # For reading zipped csv files
 library(readr,warn.conflicts=F, quietly=T)
+library(dplyr,warn.conflicts=F, quietly=T)
+library(ggplot2,warn.conflicts=F, quietly=T)
+
+# Displaying data frames using a nice format
+library(lemon)
+knit_print.data.frame <- lemon_print
 ```
 
 
 ## Loading and preprocessing the data
 
-To load the data I will the function *read_csv()* from the *readr* library to read a zipped csv file.
+To load the data I will use the function *read_csv()* from the *readr* library to read a zipped csv file.
 
 ```{r load data}
 # Read  zipped CSV into r
@@ -27,6 +33,18 @@ summary(data)
 
 ## What is mean total number of steps taken per day?
 
+```{r summarised data, warning=FALSE}
+# Get summary statistics by day
+basic_stats_by_day <- summarise(group_by(data, date), total_steps=sum(steps), mean_steps=mean(steps, na.rm = TRUE), median_steps=median(steps,na.rm = TRUE))
+
+# Use geom_bar to draw the histogram because data is already in frequency format
+ggplot(basic_stats_by_day, aes(x=date,y=total_steps)) + geom_bar(stat = 'identity') +
+  ggtitle("Total number of steps per day")
+
+# Print mean and median steps per day, head and tail to save space
+head(select(basic_stats_by_day,-(total_steps)))
+tail(select(basic_stats_by_day,-(total_steps)))
+```
 
 
 ## What is the average daily activity pattern?

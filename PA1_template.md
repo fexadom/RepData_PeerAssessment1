@@ -10,7 +10,7 @@ output:
 
 ## Loading and preprocessing the data
 
-To load the data I will the function *read_csv()* from the *readr* library to read a zipped csv file.
+To load the data I will use the function *read_csv()* from the *readr* library to read a zipped csv file.
 
 
 ```r
@@ -53,6 +53,50 @@ summary(data)
 
 ## What is mean total number of steps taken per day?
 
+
+```r
+# Get summary statistics by day
+basic_stats_by_day <- summarise(group_by(data, date), total_steps=sum(steps), mean_steps=mean(steps, na.rm = TRUE), median_steps=median(steps,na.rm = TRUE))
+
+# Use geom_bar to draw the histogram because data is already in frequency format
+ggplot(basic_stats_by_day, aes(x=date,y=total_steps)) + geom_bar(stat = 'identity') +
+  ggtitle("Total number of steps per day")
+```
+
+![](PA1_template_files/figure-html/summarised data-1.png)<!-- -->
+
+```r
+# Print mean and median steps per day, head and tail to save space
+head(select(basic_stats_by_day,-(total_steps)))
+```
+
+```
+## # A tibble: 6 x 3
+##   date       mean_steps median_steps
+##   <date>          <dbl>        <dbl>
+## 1 2012-10-01    NaN               NA
+## 2 2012-10-02      0.438            0
+## 3 2012-10-03     39.4              0
+## 4 2012-10-04     42.1              0
+## 5 2012-10-05     46.2              0
+## 6 2012-10-06     53.5              0
+```
+
+```r
+tail(select(basic_stats_by_day,-(total_steps)))
+```
+
+```
+## # A tibble: 6 x 3
+##   date       mean_steps median_steps
+##   <date>          <dbl>        <dbl>
+## 1 2012-11-25       41.1            0
+## 2 2012-11-26       38.8            0
+## 3 2012-11-27       47.4            0
+## 4 2012-11-28       35.4            0
+## 5 2012-11-29       24.5            0
+## 6 2012-11-30      NaN             NA
+```
 
 
 ## What is the average daily activity pattern?
