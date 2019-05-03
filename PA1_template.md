@@ -63,40 +63,39 @@ ggplot(basic_stats_by_day, aes(x=date,y=total_steps)) + geom_bar(stat = 'identit
   ggtitle("Total number of steps per day")
 ```
 
-![](PA1_template_files/figure-html/summarised data-1.png)<!-- -->
+![](PA1_template_files/figure-html/summarised_data-1.png)<!-- -->
+
 
 ```r
 # Print mean and median steps per day, head and tail to save space
 head(select(basic_stats_by_day,-(total_steps)))
 ```
 
-```
-## # A tibble: 6 x 3
-##   date       mean_steps median_steps
-##   <date>          <dbl>        <dbl>
-## 1 2012-10-01    NaN               NA
-## 2 2012-10-02      0.438            0
-## 3 2012-10-03     39.4              0
-## 4 2012-10-04     42.1              0
-## 5 2012-10-05     46.2              0
-## 6 2012-10-06     53.5              0
-```
+
+
+date          mean_steps   median_steps
+-----------  -----------  -------------
+2012-10-01           NaN             NA
+2012-10-02       0.43750              0
+2012-10-03      39.41667              0
+2012-10-04      42.06944              0
+2012-10-05      46.15972              0
+2012-10-06      53.54167              0
 
 ```r
 tail(select(basic_stats_by_day,-(total_steps)))
 ```
 
-```
-## # A tibble: 6 x 3
-##   date       mean_steps median_steps
-##   <date>          <dbl>        <dbl>
-## 1 2012-11-25       41.1            0
-## 2 2012-11-26       38.8            0
-## 3 2012-11-27       47.4            0
-## 4 2012-11-28       35.4            0
-## 5 2012-11-29       24.5            0
-## 6 2012-11-30      NaN             NA
-```
+
+
+date          mean_steps   median_steps
+-----------  -----------  -------------
+2012-11-25      41.09028              0
+2012-11-26      38.75694              0
+2012-11-27      47.38194              0
+2012-11-28      35.35764              0
+2012-11-29      24.46875              0
+2012-11-30           NaN             NA
 
 
 ## What is the average daily activity pattern?
