@@ -1,8 +1,9 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
+output:
+  md_document:
+    variant: markdown_github
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
