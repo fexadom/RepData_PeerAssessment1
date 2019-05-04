@@ -89,7 +89,7 @@ mean_by_interval <- summarise(group_by(data, interval), mean_steps=mean(steps, n
 plot(mean_by_interval$interval, mean_by_interval$mean_steps, type = "l",
      xlab = "Time of day",
      ylab = "Mean number of steps",
-     main = "Mean number of seps per five minute intervals in the day")
+     main = "Mean number of steps per five minute intervals in the day")
 ```
 
 ![](PA1_template_files/figure-markdown_github/time_series-1.png)
@@ -202,10 +202,51 @@ mean(basic_stats_by_day_no_nas$total_steps, na.rm = TRUE)
 
     ## [1] 10765.64
 
-The strategy used to repalace NAs has a minimal impact on total steps
-per day and on the average of total steps per day. Only eight days are
+The strategy used to replace NAs has a minimal impact on total steps per
+day and on the average of total steps per day. Only eight days are
 affected (days when there were no measurements) and this had a minimal
 effect on the average.
 
 Are there differences in activity patterns between weekdays and weekends?
 -------------------------------------------------------------------------
+
+First we need to group data by day of the week and compare the mean per
+day:
+
+``` r
+# Create a new column with the day of the week
+data_wd <- mutate(data, weekday = wday(date, week_start = 1))
+
+# Get summary statistics by day of the week
+basic_stats_by_wd <- summarise(group_by(data_wd, weekday), total_steps=sum(steps, na.rm = TRUE), mean_steps=mean(steps, na.rm = TRUE))
+basic_stats_by_wd$weekday <- factor(basic_stats_by_wd$weekday)
+
+days_of_week <- c("Mon","Tue","Wed","Thu","Fri","Sat","Sun")
+
+# Draw the histogram
+ggplot(basic_stats_by_wd, aes(x=weekday,y=mean_steps)) + geom_bar(stat = 'identity') + scale_x_discrete(labels= days_of_week) +
+  labs(x="Day of the week",y="Total steps") +
+  ggtitle("Total number of steps per day of the week")
+```
+
+![](PA1_template_files/figure-markdown_github/weekdays-1.png)
+
+It seems that the weekends are more active on average as expected. Now
+to analyse average daily activity by time of day and day of the week we
+can do this:
+
+``` r
+# Group steps by 5-minute interval and day of the week
+mean_by_interval_wd <- summarise(group_by(data_wd, weekday, interval), mean_steps=mean(steps, na.rm = TRUE))
+mean_by_interval_wd$weekday <- factor(mean_by_interval_wd$weekday,       labels = days_of_week)
+
+ggplot(mean_by_interval_wd, aes(x=interval,y=mean_steps)) + geom_line() +
+  labs(x="Time of day",y="Mean steps") +
+  facet_grid(weekday ~ .) +
+  ggtitle("Mean number of steps per time of day and day of the week")
+```
+
+![](PA1_template_files/figure-markdown_github/weekday_activity-1.png)
+
+It seems that during the weekends the subject rises up later but is more
+consistently active during the entire day.

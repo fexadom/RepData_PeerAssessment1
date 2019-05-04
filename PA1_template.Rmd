@@ -1,9 +1,9 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
 output:
-  html_document: default
   md_document:
     variant: markdown_github
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
